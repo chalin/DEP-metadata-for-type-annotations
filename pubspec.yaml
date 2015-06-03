@@ -1,3 +1,3 @@
-name: DEP_annotate_types
+name: DEP-metadata-for-type-annotations-priv
 dev_dependencies:
-  unittest: any
+  test: any

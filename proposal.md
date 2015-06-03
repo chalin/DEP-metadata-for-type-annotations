@@ -1,6 +1,6 @@
 # Metadata for Type Annotations
 
-- v0.1.0, 2015-06-02, initial revision.
+- v0.1.1, 2015-06-02.
 
 ## Contact information
 
@@ -57,7 +57,7 @@ In the spring of 2014, the Java 8 release included support for [JSR-308][], whic
 - Regular expression types (encoded as strings, [Regex Checker][])
 - Tainted value types ([Tainting Checker][])
 
-These are among the 20 checkers of the [Checker Framework][], which was created by the team that lead the development of the JSR itself. Further details concerning [JSR-308][], including a discussion of the utility of type annotations, can be found in the [JSR-308 FAQ][], and the Oracle Technology Network article "[JSR 308 Explained: Java Type Annotations][JSR-308 explained]".
+These are among the 20 checkers of the [Checker Framework][], which was created by the team that lead the development of the JSR itself. Further details concerning [JSR-308][], including a discussion of the utility of type annotations, can be found in the [JSR-308 FAQ][], and the Oracle Technology Network article "_[JSR 308 Explained: Java Type Annotations][JSR-308 explained]_".
 
 ### 2.2 Dart
 
@@ -245,7 +245,7 @@ int @Readonly Iterable<@Readonly E>.get length {...}
 
 can be interpreted as documenting the constraint that the `Iterable` getter named `length` changes neither the iterable elements, nor the receiver; i.e., the type of the receiver must be a subtype of `@Readonly Iterable<@Readonly E>`.
 
-> Comment. JSR-308 introduced special syntax for [receiver qualification][] by adding `this` as an explicit first parameter to an instance method. Our example above would be written in Java 8 as a method as follows: `int getLength(@Readonly Iterable<@Readonly E> this)`.
+> Comment. JSR-308 introduced special syntax for [receiver qualification][]: `this` can be added as an explicit first parameter to an instance method. Our example above would be written in Java 8 as a method as follows: `int getLength(@Readonly Iterable<@Readonly E> this)`.
 
 [receiver qualification]: http://types.cs.washington.edu/jsr308/specification/java-annotation-design.html#receivers
 
@@ -269,11 +269,11 @@ This proposal does not impact Dart's static semantics. I.e., occurrences of meta
 
 ### 5.2 Dynamic semantics
 
-With respect to runtime support the language specification reads ([DSS][] 15, "Metadata"):
+With respect to runtime support, the language specification reads ([DSS][] 15, "Metadata"):
 
 > Metadata can be retrieved at runtime via a reflective call, provided the annotated program construct p is accessible via reflection.
 
-Metadata type annotations such as immutability could be useful at runtime, e.g., for [Angular][] apps. In both the [Angular][] core and generated apps, every effort is being made to avoid the use of reflection. Hence, it may be useful to consider allowing "query access" to metadata associated with an object instance (as associated with the instance at the point of creation via an [annotated `new`/`const` expression](#a-newconst). For example:
+Metadata type annotations such as immutability could be useful at runtime, e.g., for [Angular][] apps. In both the [Angular][] core and generated apps, every effort is being made to avoid the use of reflection. Hence, it may be beneficial to consider allowing "query access" to metadata associated with an object instance (as associated with the instance at the point of creation via an [annotated `new`/`const` expression](#a-newconst). For example:
 
 ```dart
 @Immutable List<String> list = new @Immutable List<String>.from(...);
@@ -286,9 +286,9 @@ if(list2 is @Mutable List) {
 
 ## 6 Alternatives, implications and limitations
 
-The [DEP][] on _Non-null types and non-null-by-default_ ([DEP-non-null][]) can be seen as a concrete application of this proposal, although, it makes use of the (now somewhat conventional) specialized tokens `?` and `!` instead of `@Nullable` and `@NonNull` ([DEP-non-null, B.4.6][]).
+The [DEP][] on _Non-null types and non-null-by-default_ ([DEP-non-null][]) can be seen as a concrete application of this proposal, although it makes use of the (now somewhat conventional) specialized tokens `?` and `!` instead of `@Nullable` and `@NonNull`, respectively ([DEP-non-null, B.4.6][]).
 
-The changes proposed here are, in a technical sense, entirely backwards compatible. Practically speaking though, some fielded code may need to have annotations moved so that they are immediately preceding a type annotation; e.g., from
+The changes proposed here are, in a technical sense, entirely backwards compatible. Practically speaking though, some fielded code may need to have annotations moved (to the right of one or more keywords) so that they are immediately preceding a type annotation; e.g., from
 
 ```dart
 @NonNull final int i = 0;
@@ -305,11 +305,13 @@ In Java, metadata annotations have a:
 - [RetentionPolicy][]: source, class or runtime.
 - Target [ElementType][]s.
 
-Dart has only one retention policy, namely runtime, and there is no target specification. Consideration of the latter might be useful, but is outside the scope of this proposal.
+Dart has only one retention policy, namely runtime, and there is no target specification. Consideration of the latter might be useful.
+
+Going beyond support of metadata annotations for types, one might consider further extending support to any expression. But this is not considered here, as our current use cases are support of newly proposed type system enhancements.
 
 ## 7 Deliverables
 
-Our original intent was to describe specific changes to the Dart grammar as it is documented in the [DSS][], but unfortunately, the specified grammar does not match the language accepted by tools (e.g., see occurrences of `@X` and `/*@!*/` in the library example of [Section 4.2](#42-library-and-part-declarations)). Once discrepancies are addressed we will produce an updated version of the language specification and its grammar rules.
+Our original intent was to describe specific changes to the Dart grammar as it is documented in the [DSS][], but unfortunately, the [DSS][] grammar does not match the language accepted by tools (e.g., see occurrences of `@X` and `/*@!*/` in the library example of [Section 4.2](#42-library-and-part-declarations)). Once discrepancies are addressed we will produce an updated version of the language specification and its grammar rules.
 
 ## References
 
