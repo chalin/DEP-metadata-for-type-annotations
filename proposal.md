@@ -1,6 +1,6 @@
 # Metadata for Type Annotations
 
-- v0.1.1, 2015-06-02.
+- v0.1.2, 2015-06-05.
 
 ## Contact information
 
@@ -145,7 +145,7 @@ abstract class Interface<T> {}
 @a enum E { e }
 
 // Typedef
-@a typedef int Id(int);
+@a typedef /*@*/ int Id(/*@*/ int);
 
 // Function, getter, setter, possibly external
 @X external /*@!*/ int gf();
