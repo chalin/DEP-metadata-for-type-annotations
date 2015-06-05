@@ -31,7 +31,7 @@
 @a enum E { e }
 
 // Typedef
-@a typedef /*@*/ int Id(/*@*/ int);
+@a typedef /*@*/ int Id(@a int);
 
 // Function, getter, setter, possibly external
 @X external /*@!*/ int gf();
